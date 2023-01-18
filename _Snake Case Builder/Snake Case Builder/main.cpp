@@ -195,9 +195,10 @@ int main()
 			continue;
 		}
 
-		LOG("Building: %s ", (file.directory.data() + file.name_in_snake_case + file.extension).c_str());
-
+		const std::string output_path = file.directory.data() + file.name_in_snake_case + file.extension;
 		std::ifstream origin_file(file.path, std::ios::in | std::ios::binary);
+
+		LOG("Building: %s ", output_path.c_str());
 
 		if (!origin_file.is_open()) {
 			error_count++;
@@ -223,10 +224,7 @@ int main()
 		perform_transform_file_name(file_content);
 		perform_transform_class(file_content);
 
-		std::ofstream output_file(
-			file.directory.data() + file.name_in_snake_case + file.extension,
-			std::ios::trunc | std::ios::out | std::ios::binary
-		);
+		std::ofstream output_file(output_path, std::ios::trunc | std::ios::out | std::ios::binary);
 
 		if (!output_file.is_open()) {
 			error_count++;
@@ -235,7 +233,7 @@ int main()
 
 			LOG_ERROR(
 				"Can't open file %s\n", 
-				(file.directory.data() + file.name_in_snake_case + file.extension).c_str()
+				output_path.c_str()
 			);
 			continue;
 		}

@@ -1,0 +1,42 @@
+#include "visual_shader_node_transform_vec_mult.hpp"
+
+
+#include <core/godot_global.hpp>
+#include <core/core_types.hpp>
+#include <core/ref.hpp>
+#include <core/godot.hpp>
+
+#include "__icalls.hpp"
+
+
+
+
+namespace gd {
+
+
+visual_shader_node_transform_vec_mult::___method_bindings visual_shader_node_transform_vec_mult::___mb = {};
+
+void *visual_shader_node_transform_vec_mult::_detail_class_tag = nullptr;
+
+void visual_shader_node_transform_vec_mult::___init_method_bindings() {
+	___mb.mb_get_operator = gd::api->godot_method_bind_get_method("VisualShaderNodeTransformVecMult", "get_operator");
+	___mb.mb_set_operator = gd::api->godot_method_bind_get_method("VisualShaderNodeTransformVecMult", "set_operator");
+	godot_string_name class_name;
+	gd::api->godot_string_name_new_data(&class_name, "VisualShaderNodeTransformVecMult");
+	_detail_class_tag = gd::core_1_2_api->godot_get_class_tag(&class_name);
+	gd::api->godot_string_name_destroy(&class_name);
+}
+
+visual_shader_node_transform_vec_mult *visual_shader_node_transform_vec_mult::_new()
+{
+	return (visual_shader_node_transform_vec_mult *) gd::nativescript_1_1_api->godot_nativescript_get_instance_binding_data(gd::_RegisterState::language_index, gd::api->godot_get_class_constructor((char *)"VisualShaderNodeTransformVecMult")());
+}
+visual_shader_node_transform_vec_mult::Operator visual_shader_node_transform_vec_mult::get_operator() const {
+	return (visual_shader_node_transform_vec_mult::Operator) ___godot_icall_int(___mb.mb_get_operator, (const object *) this);
+}
+
+void visual_shader_node_transform_vec_mult::set_operator(const int64_t op) {
+	___godot_icall_void_int(___mb.mb_set_operator, (const object *) this, op);
+}
+
+}
