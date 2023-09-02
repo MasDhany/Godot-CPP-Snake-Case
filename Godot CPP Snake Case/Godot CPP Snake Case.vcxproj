@@ -24,6 +24,7 @@
     <ProjectGuid>{b3faf12f-e673-4151-a567-0eb895925cb3}</ProjectGuid>
     <RootNamespace>GodotSnakeCase</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Godot CPP Snake Case</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -74,29 +75,29 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(ProjectDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)-$(Platform)\</IntDir>
-    <IncludePath>C:\Users\DELL\source\repos\Godot Snake Case\Godot Snake Case\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\DELL\source\repos\Godot Snake Case\Godot Snake Case\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\DELL\source\repos\Godot\Godot CPP Snake Case\Godot CPP Snake Case\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\DELL\source\repos\Godot\Godot CPP Snake Case\Godot CPP Snake Case\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ProjectDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)-$(Platform)\</IntDir>
-    <IncludePath>C:\Users\DELL\source\repos\Godot Snake Case\Godot Snake Case\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\DELL\source\repos\Godot Snake Case\Godot Snake Case\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\DELL\source\repos\Godot\Godot CPP Snake Case\Godot CPP Snake Case\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\DELL\source\repos\Godot\Godot CPP Snake Case\Godot CPP Snake Case\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(ProjectDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)-$(Platform)\</IntDir>
-    <IncludePath>C:\Users\DELL\source\repos\Godot Snake Case\Godot Snake Case\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\DELL\source\repos\Godot Snake Case\Godot Snake Case\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\DELL\source\repos\Godot\Godot CPP Snake Case\Godot CPP Snake Case\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\DELL\source\repos\Godot\Godot CPP Snake Case\Godot CPP Snake Case\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ProjectDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)-$(Platform)\</IntDir>
-    <IncludePath>C:\Users\DELL\source\repos\Godot Snake Case\Godot Snake Case\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\DELL\source\repos\Godot Snake Case\Godot Snake Case\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\DELL\source\repos\Godot\Godot CPP Snake Case\Godot CPP Snake Case\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\DELL\source\repos\Godot\Godot CPP Snake Case\Godot CPP Snake Case\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -170,6 +171,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\utility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\utility.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
