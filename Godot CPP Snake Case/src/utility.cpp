@@ -5,6 +5,7 @@
 #include <cctype>
 #include <string>
 #include <string_view>
+#include <algorithm>
 
 // Internal Dependencies
 
@@ -117,6 +118,41 @@ utility::to_snake_case(
 	}
 
 	return output;
+}
+
+void
+utility::merge(
+	std::list<std::string>& destination,
+	std::list<std::string>&& source
+)
+{
+	for (std::string& source_value : source) {
+		// Checks if current value is already exist
+		if (std::binary_search(destination.begin(), destination.end(), source_value)) {
+			continue;
+		}
+
+		utility::insertion_sort(destination, std::move(source_value));
+	}
+}
+
+void
+utility::insertion_sort(
+	std::list<std::string>& destination,
+	std::string&& value
+)
+{
+	for (std::list<std::string>::const_iterator it = destination.cbegin();
+		it != destination.cend();
+		it++)
+	{
+		if (*it >= value) {
+			destination.insert(it, std::move(value));
+			return;
+		}
+	}
+
+	destination.push_back(std::move(value));
 }
 
 /******************************
