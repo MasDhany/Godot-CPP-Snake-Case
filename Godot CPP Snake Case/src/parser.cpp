@@ -1,5 +1,5 @@
 // Main Header
-#include <class_parser.hpp>
+#include <parser.hpp>
 
 // External Dependencies
 #include <list>
@@ -17,7 +17,7 @@
 
 [[nodiscard]]
 std::list<std::string>
-class_parser::parse(
+parser::parse(
 	const std::filesystem::path& file_path
 )
 {
@@ -43,7 +43,7 @@ class_parser::parse(
 		// Regex match
 		std::smatch match;
 
-		if (!std::regex_search(buffer, match, class_parser::regex_parse)) {
+		if (!std::regex_search(buffer, match, parser::regex_parse)) {
 			continue;
 		}
 

@@ -27,24 +27,26 @@ utility::to_snake_case(
 		return std::string(input);
 	}
 
+	// Front character of input
+	const char front_input = input.front();
 	// Result
 	std::string output = {};
 	// Whether previous character was upper case
-	bool previous_was_upper_case = std::isupper(input.front());
+	bool previous_was_upper_case = std::isupper(front_input);
 	// Whether previous character was digit
-	bool previous_was_digit = std::isdigit(input.front());
+	bool previous_was_digit = std::isdigit(front_input);
 
 	output.reserve(input.length());
 
-	if (std::isalpha(input.front())) {
-		output += static_cast<char>(std::tolower(input.front()));
+	if (std::isalpha(front_input)) {
+		output += utility::to_lowercase(front_input);
 	}
 	else {
-		output += input.front();
+		output += front_input;
 	}
 
 	// Increase by 1 on initialization as the first character has been checked and pushed
-	for (std::string_view::const_iterator it = (input.cbegin() + 1);
+	for (decltype(input)::const_iterator it = (input.cbegin() + 1);
 		it != input.cend();)
 	{
 		// Current character and increment the iterator, so we can know if we're at the end
@@ -53,7 +55,7 @@ utility::to_snake_case(
 		const bool current_is_digit = std::isdigit(ch);
 
 		if (current_is_digit) {
-			output += static_cast<char>(std::tolower(ch));
+			output += utility::to_lowercase(ch);
 			
 			previous_was_upper_case = false;
 			previous_was_digit = true;
@@ -65,12 +67,12 @@ utility::to_snake_case(
 
 		if (previous_was_digit) {
 			if (it == input.end()) {
-				output += static_cast<char>(std::tolower(ch));
+				output += utility::to_lowercase(ch);
 				break;
 			}
 			else if (it != input.end()) {
 				output += '_';
-				output += static_cast<char>(std::tolower(ch));
+				output += utility::to_lowercase(ch);
 			}
 
 			previous_was_upper_case = current_is_upper_case;
@@ -80,11 +82,11 @@ utility::to_snake_case(
 
 		if (current_is_upper_case) {
 			if (previous_was_upper_case) {
-				output += static_cast<char>(std::tolower(ch));
+				output += utility::to_lowercase(ch);
 			}
 			else if (!previous_was_upper_case) {
 				output += '_';
-				output += static_cast<char>(std::tolower(ch));
+				output += utility::to_lowercase(ch);
 			}
 
 			previous_was_upper_case = true;
@@ -94,7 +96,7 @@ utility::to_snake_case(
 
 		if (previous_was_upper_case) {
 			if (current_is_upper_case) {
-				output += static_cast<char>(std::tolower(ch));
+				output += utility::to_lowercase(ch);
 			}
 			else if (!current_is_upper_case) {
 				output += ch;
@@ -103,7 +105,7 @@ utility::to_snake_case(
 		else if (!previous_was_upper_case) {
 			if (current_is_upper_case) {
 				output += '_';
-				output += static_cast<char>(std::tolower(ch));
+				output += utility::to_lowercase(ch);
 			}
 			else if (!current_is_upper_case) {
 				output += ch;

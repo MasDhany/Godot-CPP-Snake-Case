@@ -1,5 +1,5 @@
-#ifndef GODOT_CPP_SNAKE_CASE_CLASS_PARSER
-#define GODOT_CPP_SNAKE_CASE_CLASS_PARSER
+#ifndef GODOT_CPP_SNAKE_CASE_PARSER
+#define GODOT_CPP_SNAKE_CASE_PARSER
 
 // Main Header
 
@@ -11,7 +11,7 @@
 
 // Internal Dependencies
 
-class class_parser {
+class parser {
 private:	// Static Attributes
 	// Regex for searching class/struct name
 	static inline
@@ -37,4 +37,4 @@ public:		// Static Methods
 
 // Inline File
 
-#endif // GODOT_SNAKE_CASE_CPP_PARSER
+#endif // GODOT_CPP_SNAKE_CASE_PARSER
