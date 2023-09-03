@@ -1,5 +1,5 @@
-#ifndef GODOT_SNAKE_CASE_UTILITY
-#define GODOT_SNAKE_CASE_UTILITY
+#ifndef GODOT_SNAKE_CASE_CPP_UTILITY
+#define GODOT_SNAKE_CASE_CPP_UTILITY
 
 // Main Header
 
@@ -25,4 +25,4 @@ namespace utility {
 
 // Inline File
 
-#endif // GODOT_SNAKE_CASE_UTILITY
+#endif // GODOT_SNAKE_CASE_CPP_UTILITY
