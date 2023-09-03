@@ -14,7 +14,7 @@
 
 [[nodiscard]]
 std::string
-utility::camel_to_snake(
+utility::to_snake_case(
 	const std::string_view input
 )
 {
@@ -22,7 +22,12 @@ utility::camel_to_snake(
 		return std::string();
 	}
 
-	// Converted camel case to snake case
+	// Leaving unconverted if found underscore
+	if (input.find('_') != std::string_view::npos) {
+		return std::string(input);
+	}
+
+	// Result
 	std::string output = {};
 	// Whether previous character was upper case
 	bool previous_was_upper_case = std::isupper(input.front());
@@ -64,7 +69,7 @@ utility::camel_to_snake(
 				break;
 			}
 			else if (it != input.end()) {
-				output += "_";
+				output += '_';
 				output += static_cast<char>(std::tolower(ch));
 			}
 
@@ -78,7 +83,7 @@ utility::camel_to_snake(
 				output += static_cast<char>(std::tolower(ch));
 			}
 			else if (!previous_was_upper_case) {
-				output += "_";
+				output += '_';
 				output += static_cast<char>(std::tolower(ch));
 			}
 
@@ -97,7 +102,7 @@ utility::camel_to_snake(
 		}
 		else if (!previous_was_upper_case) {
 			if (current_is_upper_case) {
-				output += "_";
+				output += '_';
 				output += static_cast<char>(std::tolower(ch));
 			}
 			else if (!current_is_upper_case) {

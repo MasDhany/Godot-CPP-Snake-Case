@@ -50,8 +50,8 @@ class_parser::parse(
 		// Class name
 		std::string class_name = match[2];
 
-		// Ignore class/struct name with "_" at the beginning
-		if (class_name.front() == '_') {
+		// Ignore class/struct name if found '_'
+		if (class_name.find('_') != std::string::npos) {
 			continue;
 		}
 

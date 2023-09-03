@@ -22,9 +22,10 @@ private:	// Static Attributes
 
 public:		// Static Methods
 	/**
-	@brief Parses classes from a single file
+	@brief Parses classes/structs from a single file. Classes/structs with '_'
+		character are ignored
 	@param [file_path] Path of the file to parse
-	@return Class names of the file
+	@return Class/struct names of the file
 	*/
 	[[nodiscard]]
 	static
