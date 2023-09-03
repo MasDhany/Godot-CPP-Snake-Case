@@ -47,7 +47,15 @@ class_parser::parse(
 			continue;
 		}
 
-		class_names.push_back(match[2]);
+		// Class name
+		std::string class_name = match[2];
+
+		// Ignore class/struct name with "_" at the beginning
+		if (class_name.front() == '_') {
+			continue;
+		}
+
+		class_names.push_back(std::move(class_name));
 	}
 
 	return class_names;
