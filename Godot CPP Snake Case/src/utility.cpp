@@ -31,19 +31,25 @@ utility::camel_to_snake(
 
 	output.reserve(input.length());
 
-	for (const char& ch : input) {
+	if (std::isalpha(input.front())) {
+		output += static_cast<char>(std::tolower(input.front()));
+	}
+	else {
+		output += input.front();
+	}
+
+	// Increase by 1 on initialization as the first character has been checked and pushed
+	for (std::string_view::const_iterator it = (input.cbegin() + 1);
+		it != input.cend();)
+	{
+		// Current character and increment the iterator, so we can know if we're at the end
+		const char& ch = *it++;
 		// Whether current character is digit
 		const bool current_is_digit = std::isdigit(ch);
 
 		if (current_is_digit) {
-			if (previous_was_digit) {
-				output += ch;
-			}
-			else if (!previous_was_digit) {
-				output += "_";
-				output += ch;
-			}
-
+			output += static_cast<char>(std::tolower(ch));
+			
 			previous_was_upper_case = false;
 			previous_was_digit = true;
 			continue;
@@ -51,6 +57,21 @@ utility::camel_to_snake(
 
 		// Whether current character is upper case
 		const bool current_is_upper_case = std::isupper(ch);
+
+		if (previous_was_digit) {
+			if (it == input.end()) {
+				output += static_cast<char>(std::tolower(ch));
+				break;
+			}
+			else if (it != input.end()) {
+				output += "_";
+				output += static_cast<char>(std::tolower(ch));
+			}
+
+			previous_was_upper_case = current_is_upper_case;
+			previous_was_digit = false;
+			continue;
+		}
 
 		if (current_is_upper_case) {
 			if (previous_was_upper_case) {
