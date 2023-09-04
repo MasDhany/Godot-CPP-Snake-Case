@@ -1,5 +1,5 @@
-#ifndef GODOT_CPP_SNAKE_CASE_CLASS_PARSER
-#define GODOT_CPP_SNAKE_CASE_CLASS_PARSER
+#ifndef GODOT_CPP_SNAKE_CASE_PARSER
+#define GODOT_CPP_SNAKE_CASE_PARSER
 
 // Main Header
 
@@ -11,20 +11,21 @@
 
 // Internal Dependencies
 
-class class_parser {
+class parser {
 private:	// Static Attributes
 	// Regex for searching class/struct name
 	static inline
 	const std::regex regex_parse = std::regex(
-		"(class|struct)[ ]*([a-zA-Z0-9_]*)[ ]*(;|\\{)",
+		"[^_[:alnum:]](class|struct)[[:space:]]+([_[:alnum:]]+)[[:space:]]*[;|\\{|:]",
 		std::regex::ECMAScript
 	);
 
 public:		// Static Methods
 	/**
-	@brief Parses classes from a single file
+	@brief Parses classes/structs from a single file. Classes/structs with '_'
+		character are ignored
 	@param [file_path] Path of the file to parse
-	@return Class names of the file
+	@return Class/struct names of the file
 	*/
 	[[nodiscard]]
 	static
@@ -36,4 +37,4 @@ public:		// Static Methods
 
 // Inline File
 
-#endif // GODOT_SNAKE_CASE_CPP_PARSER
+#endif // GODOT_CPP_SNAKE_CASE_PARSER
