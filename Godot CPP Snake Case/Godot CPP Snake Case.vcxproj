@@ -170,11 +170,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\editor.cpp" />
+    <ClCompile Include="src\parser.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\config.hpp" />
+    <ClInclude Include="include\parser.hpp" />
+    <ClInclude Include="include\editor.hpp" />
     <ClInclude Include="include\utility.hpp" />
+    <ClInclude Include="include\utility.ipp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
