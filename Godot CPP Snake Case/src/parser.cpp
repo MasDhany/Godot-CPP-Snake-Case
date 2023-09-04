@@ -6,10 +6,10 @@
 #include <string>
 #include <filesystem>
 #include <fstream>
-
-#include <iostream>
+#include <regex>
 
 // Internal Dependencies
+#include <utility.hpp>
 
 /******************************
 	Public Static Methods - Begin
@@ -22,40 +22,28 @@ parser::parse(
 )
 {
 	// File to parse
-	std::ifstream file(file_path);
+	std::ifstream file(file_path, std::ios::binary);
 
-	if (!file.is_open()) {
+	if (!file.is_open()) 
+		[[unlikely]]
+	{
 		return std::list<std::string>();
 	}
 
 	// List of class names of the file
 	std::list<std::string> class_names;
-	// Read buffer
-	std::string buffer = {};
+	// File contents
+	std::string contents(static_cast<std::size_t>(std::filesystem::file_size(file_path)), NULL);
+	
+	file.read(contents.data(), contents.length());
 
-	while (!file.eof()) {
-		std::getline(file, buffer);
+	// Begin iterator of matched class/struct name
+	const std::sregex_iterator begin = std::sregex_iterator(contents.begin(), contents.end(), parser::regex_parse);
+	// End iterator
+	const std::sregex_iterator end;
 
-		if (buffer.empty()) {
-			continue;
-		}
-
-		// Regex match
-		std::smatch match;
-
-		if (!std::regex_search(buffer, match, parser::regex_parse)) {
-			continue;
-		}
-
-		// Class name
-		std::string class_name = match[2];
-
-		// Ignore class/struct name if found '_'
-		if (class_name.find('_') != std::string::npos) {
-			continue;
-		}
-
-		class_names.push_back(std::move(class_name));
+	for (std::sregex_iterator it = begin; it != end; it++) {
+		utility::insertion_sort(class_names, (*it)[2]);
 	}
 
 	return class_names;
