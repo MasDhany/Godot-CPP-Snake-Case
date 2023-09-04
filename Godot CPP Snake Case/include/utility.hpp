@@ -7,6 +7,8 @@
 #include <list>
 #include <string>
 #include <string_view>
+#include <filesystem>
+#include <regex>
 
 // Internal Dependencies
 
@@ -60,6 +62,46 @@ namespace utility {
 	insertion_sort(
 		std::list<std::string>& destination,
 		std::string&& value
+	);
+
+	/**
+	@brief Creates directories for specified [file_path] so the file can be created
+		there
+	@param [file_path] Path of the file
+	@return [true] on success or [false] on failure
+	*/
+	extern
+	bool
+	create_directories_for(
+		const std::filesystem::path& file_path
+	);
+
+	/**
+	@brief Replace all matches [regex] at position 1 to [to]
+	@param [string] The string to replace
+	@param [regex] The regular expression to match
+	@param [to] Result
+	*/
+	extern
+	void
+	replace(
+		std::string& string,
+		const std::regex& regex,
+		const std::string& to
+	);
+
+	/**
+	@brief Replace all matches whole word from [from] to [to]
+	@param [string] The string where [from] are
+	@param [from] The string to replace
+	@param [to] Result
+	*/
+	extern inline
+	void
+	replace(
+		std::string& string,
+		const std::string& from,
+		const std::string& to
 	);
 }
 

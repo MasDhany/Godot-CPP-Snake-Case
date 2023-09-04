@@ -2,10 +2,13 @@
 #include <utility.hpp>
 
 // External Dependencies
+#include <cstddef>
 #include <cctype>
 #include <string>
 #include <string_view>
 #include <algorithm>
+#include <filesystem>
+#include <regex>
 
 // Internal Dependencies
 
@@ -153,6 +156,68 @@ utility::insertion_sort(
 	}
 
 	destination.push_back(std::move(value));
+}
+
+bool
+utility::create_directories_for(
+	const std::filesystem::path& file_path
+)
+try {
+	// File path in string
+	const std::string file_path_string = file_path.string();
+	// Current slash position
+	std::size_t slash_pos = 0;
+	
+	for (;;) {
+		// Next slash pos
+		const std::size_t next_slash_pos = file_path_string.find(
+			std::filesystem::path::preferred_separator, 
+			slash_pos + 1
+		);
+
+		if (next_slash_pos == std::string::npos) {
+			break;
+		}
+
+		// Current directory to create
+		const std::string current_directory = file_path_string.substr(
+			0,
+			next_slash_pos
+		);
+
+		if (std::filesystem::exists(current_directory)) {
+			if (!std::filesystem::is_directory(current_directory)) {
+				return false;
+			}
+		}
+		else {
+			if (!std::filesystem::create_directory(current_directory)) {
+				return false;
+			}
+		}
+
+		slash_pos = next_slash_pos;
+	}
+
+	return true;
+}
+catch (const std::filesystem::filesystem_error&) {
+	return false;
+}
+
+void
+utility::replace(
+	std::string& string,
+	const std::regex& regex,
+	const std::string& to
+)
+{
+	// Match result
+	std::smatch match;
+
+	while (std::regex_search(string, match, regex)) {
+		string.replace(match.position(1), match[1].length(), to);
+	}
 }
 
 /******************************
