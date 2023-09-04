@@ -4,9 +4,12 @@
 #include <iostream>
 
 // Internal Dependencies
-#include <utility.hpp>
+#include <editor.hpp>
 
 int main()
 {
+	editor::run();
+	std::cout << "Done" << '\n';
+	std::cin.get();
 	return 0;
 }
