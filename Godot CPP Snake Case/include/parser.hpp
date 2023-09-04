@@ -16,7 +16,7 @@ private:	// Static Attributes
 	// Regex for searching class/struct name
 	static inline
 	const std::regex regex_parse = std::regex(
-		"[^_[:alnum:]](class|struct)[[:space:]]+([_[:alnum:]]+)[[:space:]]*[;|\\{]",
+		"[^_[:alnum:]](class|struct)[[:space:]]+([_[:alnum:]]+)[[:space:]]*[;|\\{|:]",
 		std::regex::ECMAScript
 	);
 

@@ -43,7 +43,15 @@ parser::parse(
 	const std::sregex_iterator end;
 
 	for (std::sregex_iterator it = begin; it != end; it++) {
-		utility::insertion_sort(class_names, (*it)[2]);
+		// Current calss/struct name
+		std::string class_name = it->str(2);
+
+		// Ignore if found '_'
+		if (class_name.find('_') != std::string::npos) {
+			continue;
+		}
+
+		utility::insertion_sort(class_names, std::move(class_name));
 	}
 
 	return class_names;
