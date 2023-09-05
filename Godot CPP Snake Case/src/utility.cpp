@@ -212,11 +212,17 @@ utility::replace(
 	const std::string& to
 )
 {
+	// Current search position
+	std::size_t seek = 0;
 	// Match result
 	std::smatch match;
 
-	while (std::regex_search(string, match, regex)) {
-		string.replace(match.position(1), match[1].length(), to);
+	while (seek < string.length() && 
+		std::regex_search(string.cbegin() + seek, string.cend(), match, regex)) 
+	{
+		string.replace(seek + match.position(1), match[1].length(), to);
+
+		seek += (match.position(1) + match[1].length());
 	}
 }
 
