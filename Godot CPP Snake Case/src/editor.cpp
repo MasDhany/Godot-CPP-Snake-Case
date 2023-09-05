@@ -8,6 +8,8 @@
 #include <iostream>
 #include <fstream>
 #include <format>
+#include <utility>
+#include <regex>
 
 // Internal Dependencies
 #include <config.hpp>
@@ -25,9 +27,17 @@ editor::merge_metadata(
 )
 {
 	utility::merge(destination.class_names_original, std::move(source.class_names_original));
-	
+
 	for (std::filesystem::directory_entry& entry : source.file_entries) {
 		destination.file_entries.push_back(std::move(entry));
+	}
+
+	for (std::string& name : source.header_file_names_original) {
+		destination.header_file_names_original.push_back(std::move(name));
+	}
+
+	for (std::string& name : source.header_file_names_snake_case) {
+		destination.header_file_names_snake_case.push_back(std::move(name));
 	}
 }
 
@@ -38,11 +48,7 @@ editor::change_input_file_path_to_output(
 )
 {
 	// File name of input file path
-	std::string file_name = file_path.filename().string();
-
-	// Remove extension
-	file_name.erase(file_name.rfind("."));
-
+	std::string file_name = file_path.filename().replace_extension("").string();
 	// Changed input file path to output
 	std::string output_file_path = file_path.string();
 	
@@ -79,14 +85,35 @@ editor::get_metadata_from_directory(
 		else 
 			[[likely]]
 		{
-			std::cout << "Parsing: " << entry.path() << '\n';
-
-			utility::merge(data.class_names_original, parser::parse(entry.path()));
-			data.file_entries.push_back(entry);
+			editor::insert_metadata_from_file(data, entry);
 		}
 	}
 
 	return data;
+}
+
+void
+editor::insert_metadata_from_file(
+	editor::metadata& data,
+	const std::filesystem::directory_entry& file_entry
+)
+{
+	// File path
+	const std::filesystem::path& file_path = file_entry.path();
+	// File name
+	std::string file_name = file_path.filename().replace_extension("").string();
+
+	std::cout << "Parsing: " << file_path << '\n';
+
+	utility::merge(data.class_names_original, parser::parse(file_path));
+	
+	data.file_entries.push_back(file_entry);
+
+	// Checks if the file is a header file
+	if (file_path.extension().string() == ".hpp") {
+		data.header_file_names_snake_case.push_back(utility::to_snake_case(file_name));
+		data.header_file_names_original.push_back(std::move(file_name));
+	}
 }
 
 [[nodiscard]]
@@ -105,21 +132,31 @@ editor::get_metadata()
 		else 
 			[[likely]]
 		{
-			std::cout << "Parsing: " << entry.path() << '\n';
-
-			utility::merge(data.class_names_original, parser::parse(entry.path()));
-			data.file_entries.push_back(entry);
+			editor::insert_metadata_from_file(data, entry);
 		}
 	}
 
-	// Get class names in snake case
+	// Get class names in snake case, regex for matching original name, and regex for matching name in snake case
 	for (const std::string& original_class : data.class_names_original) {
 		data.class_names_snake_case.push_back(utility::to_snake_case(original_class));
+		
+		data.regex_class_name_original.push_back(
+			std::regex("[^_[:alnum:]](" + original_class + ")[^_[:alnum:]]")
+		);
+
+		data.regex_class_name_snake_case.push_back(
+			std::regex("[^_</\"[:alnum:]](" + data.class_names_snake_case.back() + ")[^_[:alnum:]]")
+		);
 	}
 
 	// Get dummy class names
 	for (const std::string& original_class : data.class_names_original) {
 		data.class_names_dummy.push_back("_" + original_class);
+	}
+
+	// Get regex for matching header file original name
+	for (const std::string original_header : data.header_file_names_original) {
+		data.regex_header_file_name_original.push_back(std::regex("[</\"](" + original_header + ")\\."));
 	}
 
 	std::cout << std::vformat(
@@ -162,12 +199,16 @@ editor::run()
 		
 		// Output file path
 		const std::filesystem::path output_path = editor::change_input_file_path_to_output(input_file_path);
+		
+		if (!utility::create_directories_for(output_path)) 
+			[[unlikely]]
+		{
+			std::cerr << "An error occure while creating directories for " << output_path;
+			return false;
+		}
+
 		// Output file
-		std::ofstream output_file;
-
-		utility::create_directories_for(output_path);
-
-		output_file.open(output_path, std::ios::trunc | std::ios::binary);
+		std::ofstream output_file(output_path, std::ios::trunc | std::ios::binary);
 
 		if (!output_file.is_open()) 
 			[[unlikely]]
@@ -175,31 +216,66 @@ editor::run()
 			std::cerr << "An error occure while opening " << output_path;
 			return false;
 		}
-
-		std::cout << "Editing: " << output_path << '\n';
-			
-		// Class names original iterator
-		std::list<std::string>::const_iterator it_original = data.class_names_original.cbegin();
-		// Class names snake case iterator
-		std::list<std::string>::const_iterator it_snake_case = data.class_names_snake_case.cbegin();
-		// Class names dummy iterator
-		std::list<std::string>::const_iterator it_dummy = data.class_names_dummy.cbegin();
+	
 		// File contents
 		std::string contents(static_cast<std::size_t>(std::filesystem::file_size(input_file_path)), NULL);
 
 		input_file.read(contents.data(), contents.length());
 
-		for (;it_original != data.class_names_original.cend();
-			it_original++, it_snake_case++, it_dummy++) 
-		{
-			// Replace godot namespace
-			utility::replace(contents, "godot", config::godot_namespace_result);
-			
-			// Replace variables that use godot class/struct names in snake case
-			utility::replace(contents, std::regex("[^_</\\\\\"[:alnum:]](" + *it_snake_case + ")[^_[:alnum:]]"), *it_dummy);
+		std::cout << "Editing: " << output_path << '\n';
 
-			// Replace class/struct names to snake case
-			utility::replace(contents, *it_original, *it_snake_case);
+		// Replace godot namespace
+		utility::replace(contents, "godot", config::godot_namespace_result);
+
+		// Iterator of class names original
+		std::list<std::string>::const_iterator it_class_original = data.class_names_original.cbegin();
+		// Iterator of class names snake case
+		std::list<std::string>::const_iterator it_class_snake_case = data.class_names_snake_case.cbegin();
+		// Iterator of class names dummy iterator
+		std::list<std::string>::const_iterator it_class_dummy = data.class_names_dummy.cbegin();
+		// Iterator of regex for matching godot class/struct original name
+		std::list<std::regex>::const_iterator it_regex_class_original = data.regex_class_name_original.cbegin();
+		// Iterator of regex for matching godot class/struct name in snake case
+		std::list<std::regex>::const_iterator it_regex_class_snake_case = data.regex_class_name_snake_case.cbegin();
+
+		// Variables, and class/struct names.
+		for (;
+			// Only check 1 iterator since they all have the same size
+			it_class_original != data.class_names_original.cend();
+			it_class_original++, it_class_snake_case++, it_class_dummy++, 
+			it_regex_class_original++, it_regex_class_snake_case++)
+		{
+			// Checks whether godot class/struct name in snake case is found for faster process
+			if (contents.find(*it_class_snake_case) != std::string::npos) {
+				// Replace variables only that use godot class/struct names in snake case
+				utility::replace(contents, *it_regex_class_snake_case, *it_class_dummy);
+			}
+
+			// Checks whether godot class/struct original name is found for faster process
+			if (contents.find(*it_class_original) != std::string::npos) {
+				// Replace class/struct names to snake case
+				utility::replace(contents, *it_regex_class_original, *it_class_snake_case);
+			}
+		}
+
+		// Iterator of header file original names
+		std::list<std::string>::const_iterator it_header_original = data.header_file_names_original.cbegin();
+		// Iterator of header file snake case iterator
+		std::list<std::string>::const_iterator it_header_snake_case = data.header_file_names_snake_case.cbegin();
+		// Iterator of regex for matching header file original name
+		std::list<std::regex>::const_iterator it_regex_header_original = data.regex_header_file_name_original.cbegin();
+
+		// Edit include file names.
+		for (;
+			// Only check 1 iterator since they all have the same size
+			it_header_original != data.header_file_names_original.cend();
+			it_header_original++, it_header_snake_case++, it_regex_header_original++)
+		{
+			// Checks whether header file original name is found for faster process
+			if (contents.find(*it_header_original) != std::string::npos) {
+				// Replace include file names to snake case
+				utility::replace(contents, *it_regex_header_original, *it_header_snake_case);
+			}
 		}
 
 		output_file << contents;
