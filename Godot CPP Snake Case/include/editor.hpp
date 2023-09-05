@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <list>
 #include <string>
+#include <regex>
 
 // Internal Dependencies
 
@@ -16,6 +17,8 @@ private:	// Types
 	@brief Metadata contains godot class/struct names and file entry to edit
 	*/
 	struct metadata {
+		// List of file entries
+		std::list<std::filesystem::directory_entry> file_entries;
 		// List of godot class/struct original names
 		std::list<std::string> class_names_original;
 		// List of godot class/struct names in snake case
@@ -23,8 +26,16 @@ private:	// Types
 		// List of godot class/struct dummy names. Used for replacing variables
 		// that use godot class/struct names in snake case.
 		std::list<std::string> class_names_dummy;
-		// List of file entries
-		std::list<std::filesystem::directory_entry> file_entries;
+		// List of regex for matching godot class/struct original name
+		std::list<std::regex> regex_class_name_original;
+		// List of regex for matching godot class/struct name in snake case
+		std::list<std::regex> regex_class_name_snake_case;
+		// List of header file original names
+		std::list<std::string> header_file_names_original;
+		// List of header file names in snake case
+		std::list<std::string> header_file_names_snake_case;
+		// List of regex for matching header file original name
+		std::list<std::regex> regex_header_file_name_original;
 	};
 
 private:	// Static Methods
@@ -56,7 +67,7 @@ private:	// Static Methods
 	);
 
 	/**
-	@brief Gets metadata in specified directory
+	@brief Gets metadata in specified [directory]
 	@param [directory] The directory to get metadata
 	@return Metadata
 	*/
@@ -65,6 +76,18 @@ private:	// Static Methods
 	editor::metadata
 	get_metadata_from_directory(
 		const std::filesystem::path& directory
+	);
+
+	/**
+	@brief Inserts metadata in specified [file_entry] to [data]
+	@param [data] Destination metadata
+	@param [file_entry] The directory entry refers to a regular file
+	*/
+	static
+	void
+	insert_metadata_from_file(
+		editor::metadata& data,
+		const std::filesystem::directory_entry& file_entry
 	);
 	
 	/**
