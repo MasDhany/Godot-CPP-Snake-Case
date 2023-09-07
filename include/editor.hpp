@@ -14,7 +14,7 @@
 class editor {
 private:	// Types
 	/**
-	@brief Metadata contains godot class/struct names and file entry to edit
+	@brief Metadata contains godot class/struct names and file entries to edit
 	*/
 	struct metadata {
 		// List of file entries
@@ -53,8 +53,8 @@ private:	// Static Methods
 	);
 
 	/**
-	@brief Changes directory of specified [file_path] from in [editor::input_directory] 
-		to [editor::output_directory] and changes file name of specified [file_path]
+	@brief Changes directory of specified [file_path] from in [config::input_directory] 
+		to [config::output_directory] and changes file name of specified [file_path]
 		to snake case
 	@param [file_path] Path of the file to change
 	@return Changed [file_path]
@@ -91,7 +91,7 @@ private:	// Static Methods
 	);
 	
 	/**
-	@brief Gets metadata in [editor::input_directory]
+	@brief Gets metadata in [config::input_directory]
 	@return Metadata
 	*/
 	[[nodiscard]]
@@ -102,7 +102,7 @@ private:	// Static Methods
 public:		// Static Methods
 	/**
 	@brief Runs the editor to edit godot classes/struct and file names from
-		[editor::input_directory] then puts the result in [editor::output_directory]
+		[config::input_directory] then puts the result in [config::output_directory]
 	@return [true] on success or [false] on failure
 	*/
 	static
