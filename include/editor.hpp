@@ -14,27 +14,28 @@
 class editor {
 private:	// Types
 	/**
-	@brief Metadata contains godot class/struct names and file entries to edit
+	@brief Metadata contains regular expressions, class/struct names, 
+		namespaces and file entries to edit
 	*/
 	struct metadata {
 		// List of file entries
 		std::list<std::filesystem::directory_entry> file_entries;
-		// List of godot class/struct original names
+		// List of class/struct original names
 		std::list<std::string> class_names_original;
-		// List of godot class/struct names in snake case
+		// List of class/struct names in snake case
 		std::list<std::string> class_names_snake_case;
-		// List of godot class/struct dummy names. Used for replacing variables
-		// that use godot class/struct names in snake case.
+		// List of class/struct dummy names. Used for replacing variables
+		// that use class/struct names in snake case.
 		std::list<std::string> class_names_dummy;
-		// List of regex for matching godot class/struct original name
+		// List of regex for matching class/struct original name
 		std::list<std::regex> regex_class_name_original;
-		// List of regex for matching godot class/struct name in snake case
+		// List of regex for matching class/struct name in snake case
 		std::list<std::regex> regex_class_name_snake_case;
-		// List of godot namespace original names
+		// List of namespace original names
 		std::list<std::string> namespace_names_original;
-		// List of godot namespace names in snake case
+		// List of namespace names in snake case
 		std::list<std::string> namespace_names_snake_case;
-		// List of regex for matching godot namespace original name
+		// List of regex for matching namespace original name
 		std::list<std::regex> regex_namespace_name_original;
 		// List of header file original names
 		std::list<std::string> header_file_names_original;
@@ -107,7 +108,7 @@ private:	// Static Methods
 
 public:		// Static Methods
 	/**
-	@brief Runs the editor to edit godot classes/struct and file names from
+	@brief Runs the editor to edit classes/struct and file names from
 		[config::input_directory] then puts the result in [config::output_directory]
 	@return [true] on success or [false] on failure
 	*/

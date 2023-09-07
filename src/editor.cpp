@@ -143,7 +143,7 @@ editor::get_metadata()
 		data.class_names_snake_case.push_back(utility::to_snake_case(original_class));
 		
 		data.regex_class_name_original.push_back(
-			std::regex("[^_[:alnum:]](" + original_class + ")[^_[:alnum:]]")
+			std::regex("[^_\"[:alnum:]](" + original_class + ")[^_\"[:alnum:]]")
 		);
 
 		data.regex_class_name_snake_case.push_back(
@@ -237,14 +237,14 @@ editor::run()
 
 		std::cout << "Editing: " << output_path << '\n';
 
-		// Replace godot namespace
+		// Replace namespace
 		utility::replace(contents, "godot", config::godot_namespace_result);
 
 		// Iterator of namespace names original
 		std::list<std::string>::const_iterator it_namespace_original = data.namespace_names_original.cbegin();
 		// Iterator of namespace names snake case
 		std::list<std::string>::const_iterator it_namespace_snake_case = data.namespace_names_snake_case.cbegin();
-		// Iterator of regex for matching godot namespace original name
+		// Iterator of regex for matching namespace original name
 		std::list<std::regex>::const_iterator it_regex_namespace_original = data.regex_namespace_name_original.cbegin();
 
 		// Edit namespace names.
@@ -253,7 +253,7 @@ editor::run()
 			it_namespace_original != data.namespace_names_original.cend();
 			it_namespace_original++, it_namespace_snake_case++, it_regex_namespace_original++)
 		{
-			// Checks whether godot class/struct original name is found for faster process
+			// Checks whether class/struct original name is found for faster process
 			if (contents.find(*it_namespace_original) != std::string::npos) {
 				// Replace class/struct names to snake case
 				utility::replace(contents, *it_regex_namespace_original, *it_namespace_snake_case);
@@ -266,9 +266,9 @@ editor::run()
 		std::list<std::string>::const_iterator it_class_snake_case = data.class_names_snake_case.cbegin();
 		// Iterator of class names dummy iterator
 		std::list<std::string>::const_iterator it_class_dummy = data.class_names_dummy.cbegin();
-		// Iterator of regex for matching godot class/struct original name
+		// Iterator of regex for matching class/struct original name
 		std::list<std::regex>::const_iterator it_regex_class_original = data.regex_class_name_original.cbegin();
-		// Iterator of regex for matching godot class/struct name in snake case
+		// Iterator of regex for matching class/struct name in snake case
 		std::list<std::regex>::const_iterator it_regex_class_snake_case = data.regex_class_name_snake_case.cbegin();
 
 		// Edit variables, and class/struct names.
@@ -278,13 +278,13 @@ editor::run()
 			it_class_original++, it_class_snake_case++, it_class_dummy++, 
 			it_regex_class_original++, it_regex_class_snake_case++)
 		{
-			// Checks whether godot class/struct name in snake case is found for faster process
+			// Checks whether class/struct name in snake case is found for faster process
 			if (contents.find(*it_class_snake_case) != std::string::npos) {
-				// Replace variables only that use godot class/struct names in snake case
+				// Replace variables only that use class/struct names in snake case
 				utility::replace(contents, *it_regex_class_snake_case, *it_class_dummy);
 			}
 
-			// Checks whether godot class/struct original name is found for faster process
+			// Checks whether class/struct original name is found for faster process
 			if (contents.find(*it_class_original) != std::string::npos) {
 				// Replace class/struct names to snake case
 				utility::replace(contents, *it_regex_class_original, *it_class_snake_case);
