@@ -30,6 +30,12 @@ private:	// Types
 		std::list<std::regex> regex_class_name_original;
 		// List of regex for matching godot class/struct name in snake case
 		std::list<std::regex> regex_class_name_snake_case;
+		// List of godot namespace original names
+		std::list<std::string> namespace_names_original;
+		// List of godot namespace names in snake case
+		std::list<std::string> namespace_names_snake_case;
+		// List of regex for matching godot namespace original name
+		std::list<std::regex> regex_namespace_name_original;
 		// List of header file original names
 		std::list<std::string> header_file_names_original;
 		// List of header file names in snake case
