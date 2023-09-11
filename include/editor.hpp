@@ -47,6 +47,24 @@ private:	// Types
 
 private:	// Static Methods
 	/**
+	@brief Get header text to insert into header file
+	@return Header text on success or empty text on failure
+	*/
+	[[nodiscard]]
+	static
+	std::string
+	get_header_text();
+
+	/**
+	@brief Get footer text to insert into header file
+	@return Footer text on success or empty text on failure
+	*/
+	[[nodiscard]]
+	static
+	std::string
+	get_footer_text();
+
+	/**
 	@brief Merges [source] to [destination]. Ignores class/struct name if already 
 		exist, so the [destination] class names are unique
 	@param [destination] Destination metadata
@@ -115,6 +133,14 @@ public:		// Static Methods
 	static
 	bool
 	run();
+
+private:	// Static Attributes
+	// Header text to insert into header file
+	static inline
+	const std::string header_text = editor::get_header_text();
+	// Footer text to insert into header file
+	static inline
+	const std::string footer_text = editor::get_footer_text();
 };
 
 // Inline File
