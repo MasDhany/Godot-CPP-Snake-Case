@@ -18,13 +18,16 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{F9AF1E82-8629-42E9-8B46-A50F5B7D1C8D}</ProjectGuid>
+    <ProjectGuid>{b3faf12f-e673-4151-a567-0eb895925cb3}</ProjectGuid>
     <RootNamespace>GodotSnakeCase</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>converter</ProjectName>
+    <ProjectName>_main</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -169,18 +172,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\editor.cpp" />
-    <ClCompile Include="src\parser.cpp" />
-    <ClCompile Include="src\utility.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\config.hpp" />
-    <ClInclude Include="include\parser.hpp" />
-    <ClInclude Include="include\editor.hpp" />
-    <ClInclude Include="include\utility.hpp" />
-    <ClInclude Include="include\utility.ipp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
