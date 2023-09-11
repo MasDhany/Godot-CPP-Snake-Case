@@ -20,6 +20,54 @@
 	Private Static Methods - Begin
 ******************************/
 
+[[nodiscard]]
+std::string
+editor::get_header_text()
+{
+	// File stream of header.txt
+	std::ifstream header_txt_file("header.txt", std::ios::binary);
+
+	if (!header_txt_file.is_open()) {
+		return std::string();
+	}
+
+	// Header text to get
+	std::string text(static_cast<std::size_t>(std::filesystem::file_size("header.txt")), NULL);
+
+	header_txt_file.read(text.data(), text.length());
+
+	// Add a line feed at the end if the user hasn't already added it.
+	if (!text.empty() && text.back() != '\n') {
+		text += '\n';
+	}
+
+	return text;
+}
+
+[[nodiscard]]
+std::string
+editor::get_footer_text()
+{
+	// File stream of header.txt
+	std::ifstream header_txt_file("footer.txt", std::ios::binary);
+
+	if (!header_txt_file.is_open()) {
+		return std::string();
+	}
+
+	// Header text to get
+	std::string text(static_cast<std::size_t>(std::filesystem::file_size("footer.txt")), NULL);
+
+	header_txt_file.read(text.data(), text.length());
+
+	// Add a line feed at the beginning if the user hasn't already added it.
+	if (!text.empty() && text.front() != '\n') {
+		text.insert(text.begin(), '\n');
+	}
+
+	return text;
+}
+
 void
 editor::merge_metadata(
 	editor::metadata& destination,
@@ -308,6 +356,17 @@ editor::run()
 			if (contents.find(*it_header_original) != std::string::npos) {
 				// Replace include file names to snake case
 				utility::replace(contents, *it_regex_header_original, *it_header_snake_case);
+			}
+		}
+
+		// Checks if the file is a header file
+		if (output_path.extension() == ".hpp") {
+			if (!editor::header_text.empty()) {
+				contents.insert(0, editor::header_text);
+			}
+
+			if (!editor::footer_text.empty()) {
+				contents += editor::footer_text;
 			}
 		}
 

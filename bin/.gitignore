@@ -1,3 +1,5 @@
-*
-!.gitignore
-!Release-Win32/
+*.exe
+*.pdb
+
+!Result/
+!Godot/
