@@ -8,6 +8,7 @@
 #include <list>
 #include <string>
 #include <regex>
+#include <vector>
 
 // Internal Dependencies
 
@@ -21,7 +22,7 @@ private:	// Types
 		// List of all C++ file entries
 		std::list<std::filesystem::directory_entry> file_entries;
 		// List of class/struct original names
-		std::list<std::string> class_names_original;
+		std::vector<std::string> class_names_original;
 		// List of class/struct names in snake case
 		std::list<std::string> class_names_snake_case;
 		// List of class/struct dummy names. Used for replacing variables
@@ -32,7 +33,7 @@ private:	// Types
 		// List of regex for matching class/struct name in snake case
 		std::list<std::regex> regex_class_name_snake_case;
 		// List of namespace original names
-		std::list<std::string> namespace_names_original;
+		std::vector<std::string> namespace_names_original;
 		// List of namespace names in snake case
 		std::list<std::string> namespace_names_snake_case;
 		// List of regex for matching namespace original name

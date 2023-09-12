@@ -305,7 +305,7 @@ editor::run()
 		utility::replace(contents, "godot", config::godot_namespace_result);
 
 		// Iterator of namespace names original
-		std::list<std::string>::const_iterator it_namespace_original = data.namespace_names_original.cbegin();
+		std::vector<std::string>::const_iterator it_namespace_original = data.namespace_names_original.cbegin();
 		// Iterator of namespace names snake case
 		std::list<std::string>::const_iterator it_namespace_snake_case = data.namespace_names_snake_case.cbegin();
 		// Iterator of regex for matching namespace original name
@@ -325,7 +325,7 @@ editor::run()
 		}
 
 		// Iterator of class names original
-		std::list<std::string>::const_iterator it_class_original = data.class_names_original.cbegin();
+		std::vector<std::string>::const_iterator it_class_original = data.class_names_original.cbegin();
 		// Iterator of class names snake case
 		std::list<std::string>::const_iterator it_class_snake_case = data.class_names_snake_case.cbegin();
 		// Iterator of class names dummy iterator
