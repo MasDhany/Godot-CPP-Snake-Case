@@ -39,15 +39,13 @@ parser::parse_class(
 
 	// Begin iterator of matched class/struct name
 	const std::sregex_iterator begin = std::sregex_iterator(contents.begin(), contents.end(), parser::regex_parse_class);
-	// End iterator
-	const std::sregex_iterator end;
-
-	for (std::sregex_iterator it = begin; it != end; it++) {
+	
+	for (std::sregex_iterator it = begin; it != parser::sregex_iterator_end; it++) {
 		// Current calss/struct name
 		std::string class_name = it->str(2);
 
-		// Ignore if found '_'
-		if (class_name.find('_') != std::string::npos) {
+		// Ignore if use snake case
+		if (utility::is_snake_case(class_name)) {
 			continue;
 		}
 
@@ -81,16 +79,14 @@ parser::parse_namespace(
 
 	// Begin iterator of matched namespace name
 	const std::sregex_iterator begin = std::sregex_iterator(contents.begin(), contents.end(), parser::regex_parse_namespace);
-	// End iterator
-	const std::sregex_iterator end;
-
-	for (std::sregex_iterator it = begin; it != end; it++) {
+	
+	for (std::sregex_iterator it = begin; it != parser::sregex_iterator_end; it++) {
 		// Current namespace name
 		std::string namespace_name = it->str(1);
 
-		// Ignore if the name is "godot" or found '_'
+		// Ignore if the name is "godot" or it's use snake case
 		if (namespace_name == "godot" ||
-			namespace_name.find('_') != std::string::npos)
+			utility::is_snake_case(namespace_name))
 		{
 			continue;
 		}
