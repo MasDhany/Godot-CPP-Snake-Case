@@ -13,6 +13,9 @@
 
 class parser {
 private:	// Static Attributes
+	// End iterator of string regex
+	static inline
+	const std::sregex_iterator sregex_iterator_end;
 	// Regex for searching class/struct name
 	static inline
 	const std::regex regex_parse_class = std::regex(

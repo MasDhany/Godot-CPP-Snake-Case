@@ -26,11 +26,24 @@ utility::to_snake_case(
 		return std::string();
 	}
 
-	// Leaving unconverted if found underscore
-	if (input.find('_') != std::string_view::npos) {
+	if (utility::is_snake_case(input)) {
 		return std::string(input);
 	}
 
+	// Convert all characters to lowercase if found '_'
+	if (input.find('_') != std::string_view::npos) {
+		// Result
+		std::string output = {};
+
+		output.reserve(input.length());
+
+		for (const char ch : input) {
+			output += utility::to_lowercase(ch);
+		}
+
+		return output;
+	}
+	
 	// Front character of input
 	const char front_input = input.front();
 	// Result
@@ -121,41 +134,6 @@ utility::to_snake_case(
 	}
 
 	return output;
-}
-
-void
-utility::merge(
-	std::list<std::string>& destination,
-	std::list<std::string>&& source
-)
-{
-	for (std::string& source_value : source) {
-		// Checks if current value is already exist
-		if (std::binary_search(destination.begin(), destination.end(), source_value)) {
-			continue;
-		}
-
-		utility::insertion_sort(destination, std::move(source_value));
-	}
-}
-
-void
-utility::insertion_sort(
-	std::list<std::string>& destination,
-	std::string&& value
-)
-{
-	for (std::list<std::string>::const_iterator it = destination.cbegin();
-		it != destination.cend();
-		it++)
-	{
-		if (*it >= value) {
-			destination.insert(it, std::move(value));
-			return;
-		}
-	}
-
-	destination.push_back(std::move(value));
 }
 
 bool

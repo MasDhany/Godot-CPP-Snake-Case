@@ -9,15 +9,39 @@
 #include <string_view>
 #include <filesystem>
 #include <regex>
+#include <type_traits>
 
 // Internal Dependencies
 
 // Functions
 namespace utility {
 	/**
-	@brief Makes [input] into snake case naming convention. Leaving unconverted 
-		if found underscore in the [input]
-	@param input String with camel case to convert
+	@brief Checks if specified [ch] is uppercase
+	@param ch A character to check
+	@return true if uppercase otherwise false
+	*/
+	[[nodiscard]]
+	extern constexpr
+	bool
+	is_uppercase(
+		const char ch
+	) noexcept;
+
+	/**
+	@brief Checks if specified [input] is snake case
+	@param input String to check
+	@return true if snake case otherwise false
+	*/
+	[[nodiscard]]
+	extern constexpr
+	bool
+	is_snake_case(
+		const std::string_view input
+	) noexcept;
+
+	/**
+	@brief Makes [input] into snake case naming convention
+	@param input String to convert
 	@return [input] with snake case naming convention
 	*/
 	[[nodiscard]]
@@ -45,23 +69,40 @@ namespace utility {
 	@param destination Destination std::list
 	@param source std::list to transfer
 	*/
+	template<
+		// Type of the destination container
+		class DestinationContainer,
+		// Type of the source container
+		class SourceContainer,
+		// Checks if the destination and source container have the same value type
+		typename = std::enable_if_t<
+			std::is_same_v<
+				typename DestinationContainer::value_type,
+				typename SourceContainer::value_type
+			>
+		>
+	>
 	extern
 	void
 	merge(
-		std::list<std::string>& destination,
-		std::list<std::string>&& source
+		DestinationContainer& destination,
+		SourceContainer&& source
 	);
 
 	/**
-	@brief Insert [value] to specified [list] sortly with slow algorithm
-	@param list Container to insert [value]
+	@brief Insert [value] to specified [destination] sortly with slow algorithm
+	@param destination Container to insert [value]
 	@param value Value to insert in the container
 	*/
+	template<
+		// Type of the container
+		class Container
+	>
 	extern
 	void
 	insertion_sort(
-		std::list<std::string>& destination,
-		std::string&& value
+		Container& destination,
+		typename Container::value_type&& value
 	);
 
 	/**
