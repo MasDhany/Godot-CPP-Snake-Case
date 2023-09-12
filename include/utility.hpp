@@ -9,6 +9,7 @@
 #include <string_view>
 #include <filesystem>
 #include <regex>
+#include <type_traits>
 
 // Internal Dependencies
 
@@ -45,23 +46,40 @@ namespace utility {
 	@param destination Destination std::list
 	@param source std::list to transfer
 	*/
+	template<
+		// Type of the destination container
+		class DestinationContainer,
+		// Type of the source container
+		class SourceContainer,
+		// Checks if the destination and source container have the same value type
+		typename = std::enable_if_t<
+			std::is_same_v<
+				typename DestinationContainer::value_type,
+				typename SourceContainer::value_type
+			>
+		>
+	>
 	extern
 	void
 	merge(
-		std::list<std::string>& destination,
-		std::list<std::string>&& source
+		DestinationContainer& destination,
+		SourceContainer&& source
 	);
 
 	/**
-	@brief Insert [value] to specified [list] sortly with slow algorithm
-	@param list Container to insert [value]
+	@brief Insert [value] to specified [destination] sortly with slow algorithm
+	@param destination Container to insert [value]
 	@param value Value to insert in the container
 	*/
+	template<
+		// Type of the container
+		class Container
+	>
 	extern
 	void
 	insertion_sort(
-		std::list<std::string>& destination,
-		std::string&& value
+		Container& destination,
+		typename Container::value_type&& value
 	);
 
 	/**

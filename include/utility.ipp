@@ -25,6 +25,43 @@ utility::to_lowercase(
 	return static_cast<char>(std::tolower(ch));
 }
 
+template<class DestinationContainer, class SourceContainer, typename>
+void
+utility::merge(
+	DestinationContainer& destination,
+	SourceContainer&& source
+)
+{
+	for (typename SourceContainer::value_type& source_value : source) {
+		// Checks if current value is already exist
+		if (std::binary_search(destination.cbegin(), destination.cend(), source_value)) {
+			continue;
+		}
+
+		utility::insertion_sort(destination, std::move(source_value));
+	}
+}
+
+template<class Container>
+void
+utility::insertion_sort(
+	Container& destination,
+	typename Container::value_type&& value
+)
+{
+	for (typename Container::const_iterator it = destination.cbegin();
+		it != destination.cend();
+		it++)
+	{
+		if (*it >= value) {
+			destination.insert(it, std::move(value));
+			return;
+		}
+	}
+
+	destination.push_back(std::move(value));
+}
+
 inline
 void
 utility::replace(
