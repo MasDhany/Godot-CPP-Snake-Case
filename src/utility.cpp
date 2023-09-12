@@ -226,6 +226,18 @@ utility::replace(
 	}
 }
 
+[[nodiscard]]
+bool
+utility::is_cpp_file(
+	const std::string& file_extension
+)
+{
+	// Regex for checking the file extension
+	static const std::regex regex_check("(.hpp|.cpp)", std::regex::ECMAScript);
+
+	return std::regex_match(file_extension, regex_check);
+}
+
 /******************************
 	Functions - End
 ******************************/

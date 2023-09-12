@@ -48,17 +48,17 @@ editor::get_header_text()
 std::string
 editor::get_footer_text()
 {
-	// File stream of header.txt
-	std::ifstream header_txt_file("footer.txt", std::ios::binary);
+	// File stream of footer.txt
+	std::ifstream footer_txt_file("footer.txt", std::ios::binary);
 
-	if (!header_txt_file.is_open()) {
+	if (!footer_txt_file.is_open()) {
 		return std::string();
 	}
 
-	// Header text to get
+	// Footer text to get
 	std::string text(static_cast<std::size_t>(std::filesystem::file_size("footer.txt")), NULL);
 
-	header_txt_file.read(text.data(), text.length());
+	footer_txt_file.read(text.data(), text.length());
 
 	// Add a line feed at the beginning if the user hasn't already added it.
 	if (!text.empty() && text.front() != '\n') {
@@ -97,7 +97,7 @@ editor::change_input_file_path_to_output(
 )
 {
 	// File name of input file path
-	std::string file_name = file_path.filename().replace_extension("").string();
+	const std::string file_name = file_path.filename().replace_extension("").string();
 	// Changed input file path to output
 	std::string output_file_path = file_path.string();
 	
@@ -149,21 +149,33 @@ editor::insert_metadata_from_file(
 {
 	// File path
 	const std::filesystem::path& file_path = file_entry.path();
-	// File name
-	std::string file_name = file_path.filename().replace_extension("").string();
 
-	std::cout << "Parsing: " << file_path << '\n';
+	if (!file_path.has_extension()) {
+		return;
+	}
 
-	utility::merge(data.class_names_original, parser::parse_class(file_path));
-	utility::merge(data.namespace_names_original, parser::parse_namespace(file_path));
-	
-	data.file_entries.push_back(file_entry);
+	// File extension
+	const std::string file_extension = file_path.extension().string();
 
-	// Checks if the file is a header file
-	if (file_path.extension().string() == ".hpp") {
+	if (!utility::is_cpp_file(file_path)) {
+		return;
+	}
+
+	// Checks if the file is a header file, then parse it if it is
+	if (utility::is_cpp_header_file(file_extension)) {
+		// File name
+		std::string file_name = file_path.filename().replace_extension("").string();
+
+		std::cout << "Parsing: " << file_path << '\n';
+
+		utility::merge(data.class_names_original, parser::parse_class(file_path));
+		utility::merge(data.namespace_names_original, parser::parse_namespace(file_path));
+
 		data.header_file_names_snake_case.push_back(utility::to_snake_case(file_name));
 		data.header_file_names_original.push_back(std::move(file_name));
 	}
+
+	data.file_entries.push_back(file_entry);
 }
 
 [[nodiscard]]
@@ -190,12 +202,14 @@ editor::get_metadata()
 	for (const std::string& original_class : data.class_names_original) {
 		data.class_names_snake_case.push_back(utility::to_snake_case(original_class));
 		
-		data.regex_class_name_original.push_back(
-			std::regex("[^_\"[:alnum:]](" + original_class + ")[^_\"[:alnum:]]")
+		data.regex_class_name_original.emplace_back(
+			"[^_\"[:alnum:]](" + original_class + ")[^_\"[:alnum:]]",
+			std::regex::ECMAScript
 		);
 
-		data.regex_class_name_snake_case.push_back(
-			std::regex("[^_</\"[:alnum:]](" + data.class_names_snake_case.back() + ")[^_[:alnum:]]")
+		data.regex_class_name_snake_case.emplace_back(
+			"[^_</\"[:alnum:]](" + data.class_names_snake_case.back() + ")[^_[:alnum:]]",
+			std::regex::ECMAScript
 		);
 	}
 
@@ -208,15 +222,17 @@ editor::get_metadata()
 	for (const std::string& original_namespace : data.namespace_names_original) {
 		data.namespace_names_snake_case.push_back(utility::to_snake_case(original_namespace));
 
-		data.regex_namespace_name_original.push_back(
-			std::regex("[^_</\"[:alnum:]](" + original_namespace + ")[^_[:alnum:]]")
+		data.regex_namespace_name_original.emplace_back(
+			"[^_</\"[:alnum:]](" + original_namespace + ")[^_[:alnum:]]",
+			std::regex::ECMAScript
 		);
 	}
 
 	// Get regex for matching header file original name
 	for (const std::string& original_header : data.header_file_names_original) {
-		data.regex_header_file_name_original.push_back(
-			std::regex("[</\"](" + original_header + ")\\.")
+		data.regex_header_file_name_original.emplace_back(
+			"[</\"](" + original_header + ")\\.",
+			std::regex::ECMAScript
 		);
 	}
 
@@ -360,7 +376,7 @@ editor::run()
 		}
 
 		// Checks if the file is a header file
-		if (output_path.extension() == ".hpp") {
+		if (utility::is_cpp_header_file(output_path)) {
 			if (!editor::header_text.empty()) {
 				contents.insert(0, editor::header_text);
 			}

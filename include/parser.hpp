@@ -30,7 +30,7 @@ public:		// Static Methods
 	/**
 	@brief Parses classes/structs from a single file. Classes/structs with '_'
 		character are ignored
-	@param [file_path] Path of the file to parse
+	@param file_path Path of the file to parse
 	@return Class/struct names of the file
 	*/
 	[[nodiscard]]
@@ -43,7 +43,7 @@ public:		// Static Methods
 	/**
 	@brief Parses namespaces from a single file. Namespaces with '_'
 		character or "godot" name are ignored
-	@param [file_path] Path of the file to parse
+	@param file_path Path of the file to parse
 	@return Namespace names of the file
 	*/
 	[[nodiscard]]

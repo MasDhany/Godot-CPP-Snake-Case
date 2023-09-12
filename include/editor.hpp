@@ -18,7 +18,7 @@ private:	// Types
 		namespaces and file entries to edit
 	*/
 	struct metadata {
-		// List of file entries
+		// List of all C++ file entries
 		std::list<std::filesystem::directory_entry> file_entries;
 		// List of class/struct original names
 		std::list<std::string> class_names_original;
@@ -67,8 +67,8 @@ private:	// Static Methods
 	/**
 	@brief Merges [source] to [destination]. Ignores class/struct name if already 
 		exist, so the [destination] class names are unique
-	@param [destination] Destination metadata
-	@param [source] Metadata to transfer
+	@param destination Destination metadata
+	@param source Metadata to transfer
 	*/
 	static
 	void
@@ -81,7 +81,7 @@ private:	// Static Methods
 	@brief Changes directory of specified [file_path] from in [config::input_directory] 
 		to [config::output_directory] and changes file name of specified [file_path]
 		to snake case
-	@param [file_path] Path of the file to change
+	@param file_path Path of the file to change
 	@return Changed [file_path]
 	*/
 	[[nodiscard]]
@@ -93,7 +93,7 @@ private:	// Static Methods
 
 	/**
 	@brief Gets metadata in specified [directory]
-	@param [directory] The directory to get metadata
+	@param directory The directory to get metadata
 	@return Metadata
 	*/
 	[[nodiscard]]
@@ -105,8 +105,8 @@ private:	// Static Methods
 
 	/**
 	@brief Inserts metadata in specified [file_entry] to [data]
-	@param [data] Destination metadata
-	@param [file_entry] The directory entry refers to a regular file
+	@param data Destination metadata
+	@param file_entry The directory entry refers to a regular file
 	*/
 	static
 	void
@@ -128,7 +128,7 @@ public:		// Static Methods
 	/**
 	@brief Runs the editor to edit classes/struct and file names from
 		[config::input_directory] then puts the result in [config::output_directory]
-	@return [true] on success or [false] on failure
+	@return true on success or false on failure
 	*/
 	static
 	bool
