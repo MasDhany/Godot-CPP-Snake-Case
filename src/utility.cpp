@@ -26,11 +26,24 @@ utility::to_snake_case(
 		return std::string();
 	}
 
-	// Leaving unconverted if found underscore
-	if (input.find('_') != std::string_view::npos) {
+	if (utility::is_snake_case(input)) {
 		return std::string(input);
 	}
 
+	// Convert all characters to lowercase if found '_'
+	if (input.find('_') != std::string_view::npos) {
+		// Result
+		std::string output = {};
+
+		output.reserve(input.length());
+
+		for (const char ch : input) {
+			output += utility::to_lowercase(ch);
+		}
+
+		return output;
+	}
+	
 	// Front character of input
 	const char front_input = input.front();
 	// Result

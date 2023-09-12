@@ -16,9 +16,32 @@
 // Functions
 namespace utility {
 	/**
-	@brief Makes [input] into snake case naming convention. Leaving unconverted 
-		if found underscore in the [input]
-	@param input String with camel case to convert
+	@brief Checks if specified [ch] is uppercase
+	@param ch A character to check
+	@return true if uppercase otherwise false
+	*/
+	[[nodiscard]]
+	extern constexpr
+	bool
+	is_uppercase(
+		const char ch
+	) noexcept;
+
+	/**
+	@brief Checks if specified [input] is snake case
+	@param input String to check
+	@return true if snake case otherwise false
+	*/
+	[[nodiscard]]
+	extern constexpr
+	bool
+	is_snake_case(
+		const std::string_view input
+	) noexcept;
+
+	/**
+	@brief Makes [input] into snake case naming convention
+	@param input String to convert
 	@return [input] with snake case naming convention
 	*/
 	[[nodiscard]]

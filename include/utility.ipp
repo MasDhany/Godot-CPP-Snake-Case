@@ -16,6 +16,32 @@
 ******************************/
 
 [[nodiscard]]
+constexpr
+bool
+utility::is_uppercase(
+	const char ch
+) noexcept
+{
+	return (ch >= 'A' && ch <= 'Z');
+}
+
+[[nodiscard]]
+constexpr
+bool
+utility::is_snake_case(
+	const std::string_view input
+) noexcept
+{
+	for (const char ch : input) {
+		if (utility::is_uppercase(ch)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+[[nodiscard]]
 inline
 char
 utility::to_lowercase(
