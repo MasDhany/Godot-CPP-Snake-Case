@@ -59,6 +59,20 @@ utility::merge(
 )
 {
 	for (typename SourceContainer::value_type& source_value : source) {
+		destination.push_back(std::move(source_value));
+	}
+
+	source.clear();
+}
+
+template<class DestinationContainer, class SourceContainer, typename>
+void
+utility::merge_unique(
+	DestinationContainer& destination,
+	SourceContainer&& source
+)
+{
+	for (typename SourceContainer::value_type& source_value : source) {
 		// Checks if current value is already exist
 		if (std::binary_search(destination.cbegin(), destination.cend(), source_value)) {
 			continue;
@@ -66,6 +80,8 @@ utility::merge(
 
 		utility::insertion_sort(destination, std::move(source_value));
 	}
+
+	source.clear();
 }
 
 template<class Container>

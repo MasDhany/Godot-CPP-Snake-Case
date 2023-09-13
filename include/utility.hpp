@@ -64,10 +64,9 @@ namespace utility {
 	) noexcept;
 
 	/**
-	@brief Merges [source] to [destination]. Ignores value if already exist, so the 
-		[destination] will have unique values
-	@param destination Destination std::list
-	@param source std::list to transfer
+	@brief Merges [source] to [destination]
+	@param destination Destination container
+	@param source container to transfer
 	*/
 	template<
 		// Type of the destination container
@@ -85,6 +84,32 @@ namespace utility {
 	extern
 	void
 	merge(
+		DestinationContainer& destination,
+		SourceContainer&& source
+	);
+
+	/**
+	@brief Merges [source] to [destination]. Ignores value if already exist, so the 
+		[destination] will have unique values
+	@param destination Destination container
+	@param source container to transfer
+	*/
+	template<
+		// Type of the destination container
+		class DestinationContainer,
+		// Type of the source container
+		class SourceContainer,
+		// Checks if the destination and source container have the same value type
+		typename = std::enable_if_t<
+			std::is_same_v<
+				typename DestinationContainer::value_type,
+				typename SourceContainer::value_type
+			>
+		>
+	>
+	extern
+	void
+	merge_unique(
 		DestinationContainer& destination,
 		SourceContainer&& source
 	);

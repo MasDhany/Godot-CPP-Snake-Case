@@ -15,12 +15,33 @@
 class editor {
 private:	// Types
 	/**
+	@brief Type of C++ file
+	*/
+	enum cpp_file_type {
+		cpp_file_type_undefined	= 0,
+		cpp_file_type_header	= 1,
+		cpp_file_type_source	= 2
+	};
+
+	/**
+	@brief Data of a file entry
+	*/
+	struct file_entry {
+		// Entry of the file
+		std::filesystem::directory_entry entry;
+		// Path of the file
+		std::filesystem::path path;
+		// Type of the file
+		editor::cpp_file_type type = editor::cpp_file_type_undefined;
+	};
+
+	/**
 	@brief Metadata contains regular expressions, class/struct names, 
 		namespaces and file entries to edit
 	*/
 	struct metadata {
 		// List of all C++ file entries
-		std::list<std::filesystem::directory_entry> file_entries;
+		std::list<editor::file_entry> file_entries;
 		// List of class/struct original names
 		std::vector<std::string> class_names_original;
 		// List of class/struct names in snake case
@@ -66,19 +87,6 @@ private:	// Static Methods
 	get_footer_text();
 
 	/**
-	@brief Merges [source] to [destination]. Ignores class/struct name if already 
-		exist, so the [destination] class names are unique
-	@param destination Destination metadata
-	@param source Metadata to transfer
-	*/
-	static
-	void
-	merge_metadata(
-		editor::metadata& destination,
-		editor::metadata&& source
-	);
-
-	/**
 	@brief Changes directory of specified [file_path] from in [config::input_directory] 
 		to [config::output_directory] and changes file name of specified [file_path]
 		to snake case
@@ -93,29 +101,17 @@ private:	// Static Methods
 	);
 
 	/**
-	@brief Gets metadata in specified [directory]
-	@param directory The directory to get metadata
-	@return Metadata
+	@brief Gets file entries from specified [directory]
+	@param directory The directory to get its file entries
+	@return File entries from [directory]
 	*/
 	[[nodiscard]]
 	static
-	editor::metadata
-	get_metadata_from_directory(
+	std::list<editor::file_entry>
+	get_file_entries_from_directory(
 		const std::filesystem::path& directory
 	);
 
-	/**
-	@brief Inserts metadata in specified [file_entry] to [data]
-	@param data Destination metadata
-	@param file_entry The directory entry refers to a regular file
-	*/
-	static
-	void
-	insert_metadata_from_file(
-		editor::metadata& data,
-		const std::filesystem::directory_entry& file_entry
-	);
-	
 	/**
 	@brief Gets metadata in [config::input_directory]
 	@return Metadata
