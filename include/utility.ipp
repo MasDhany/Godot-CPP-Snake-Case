@@ -104,17 +104,6 @@ utility::insertion_sort(
 	destination.push_back(std::move(value));
 }
 
-inline
-void
-utility::replace(
-	std::string& string,
-	const std::string& from,
-	const std::string& to
-)
-{
-	utility::replace(string, std::regex("[^_[:alnum:]](" + from + ")[^_[:alnum:]]"), to);
-}
-
 [[nodiscard]]
 inline
 bool

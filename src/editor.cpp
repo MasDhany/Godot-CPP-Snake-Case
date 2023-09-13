@@ -268,7 +268,7 @@ editor::run()
 		std::cout << "Editing: " << output_path << '\n';
 
 		// Replace godot namespace
-		utility::replace(contents, regex_godot, config::godot_namespace_result);
+		utility::replace(contents, "godot", regex_godot, config::godot_namespace_result);
 
 		// Iterator of namespace names original
 		std::vector<std::string>::const_iterator it_namespace_original = data.namespace_names_original.cbegin();
@@ -283,11 +283,8 @@ editor::run()
 			it_namespace_original != data.namespace_names_original.cend();
 			it_namespace_original++, it_namespace_snake_case++, it_regex_namespace_original++)
 		{
-			// Checks whether class/struct original name is found for faster process
-			if (contents.find(*it_namespace_original) != std::string::npos) {
-				// Replace class/struct names to snake case
-				utility::replace(contents, *it_regex_namespace_original, *it_namespace_snake_case);
-			}
+			// Replace class/struct names to snake case
+			utility::replace(contents, *it_namespace_original, *it_regex_namespace_original, *it_namespace_snake_case);
 		}
 
 		// Iterator of class names original
@@ -308,17 +305,11 @@ editor::run()
 			it_class_original++, it_class_snake_case++, it_class_dummy++, 
 			it_regex_class_original++, it_regex_class_snake_case++)
 		{
-			// Checks whether class/struct name in snake case is found for faster process
-			if (contents.find(*it_class_snake_case) != std::string::npos) {
-				// Replace variables only that use class/struct names in snake case
-				utility::replace(contents, *it_regex_class_snake_case, *it_class_dummy);
-			}
+			// Replace variables only that use class/struct names in snake case
+			utility::replace(contents, *it_class_snake_case, *it_regex_class_snake_case, *it_class_dummy);
 
-			// Checks whether class/struct original name is found for faster process
-			if (contents.find(*it_class_original) != std::string::npos) {
-				// Replace class/struct names to snake case
-				utility::replace(contents, *it_regex_class_original, *it_class_snake_case);
-			}
+			// Replace class/struct names to snake case
+			utility::replace(contents, *it_class_original, *it_regex_class_original, *it_class_snake_case);
 		}
 
 		// Iterator of header file original names
@@ -334,11 +325,8 @@ editor::run()
 			it_header_original != data.header_file_names_original.cend();
 			it_header_original++, it_header_snake_case++, it_regex_header_original++)
 		{
-			// Checks whether header file original name is found for faster process
-			if (contents.find(*it_header_original) != std::string::npos) {
-				// Replace include file names to snake case
-				utility::replace(contents, *it_regex_header_original, *it_header_snake_case);
-			}
+			// Replace include file names to snake case
+			utility::replace(contents, *it_header_original, *it_regex_header_original, *it_header_snake_case);
 		}
 
 		// Checks if the file is a header file

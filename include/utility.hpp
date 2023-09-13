@@ -145,6 +145,7 @@ namespace utility {
 	/**
 	@brief Replace all matches [regex] at position 1 to [to]
 	@param string The string to replace
+	@param base_find The string that is intended to replace
 	@param regex The regular expression to match
 	@param [to] Result
 	*/
@@ -152,21 +153,8 @@ namespace utility {
 	void
 	replace(
 		std::string& string,
+		const std::string& base_find,
 		const std::regex& regex,
-		const std::string& to
-	);
-
-	/**
-	@brief Replace all matches whole word from [from] to [to]
-	@param string The string where [from] are
-	@param from The string to replace
-	@param [to] Result
-	*/
-	extern inline
-	void
-	replace(
-		std::string& string,
-		const std::string& from,
 		const std::string& to
 	);
 
