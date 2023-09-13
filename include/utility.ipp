@@ -59,6 +59,20 @@ utility::merge(
 )
 {
 	for (typename SourceContainer::value_type& source_value : source) {
+		destination.push_back(std::move(source_value));
+	}
+
+	source.clear();
+}
+
+template<class DestinationContainer, class SourceContainer, typename>
+void
+utility::merge_unique(
+	DestinationContainer& destination,
+	SourceContainer&& source
+)
+{
+	for (typename SourceContainer::value_type& source_value : source) {
 		// Checks if current value is already exist
 		if (std::binary_search(destination.cbegin(), destination.cend(), source_value)) {
 			continue;
@@ -66,6 +80,8 @@ utility::merge(
 
 		utility::insertion_sort(destination, std::move(source_value));
 	}
+
+	source.clear();
 }
 
 template<class Container>
@@ -86,17 +102,6 @@ utility::insertion_sort(
 	}
 
 	destination.push_back(std::move(value));
-}
-
-inline
-void
-utility::replace(
-	std::string& string,
-	const std::string& from,
-	const std::string& to
-)
-{
-	utility::replace(string, std::regex("[^_[:alnum:]](" + from + ")[^_[:alnum:]]"), to);
 }
 
 [[nodiscard]]

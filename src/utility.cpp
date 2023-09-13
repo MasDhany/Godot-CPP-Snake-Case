@@ -186,21 +186,42 @@ catch (const std::filesystem::filesystem_error&) {
 void
 utility::replace(
 	std::string& string,
+	const std::string& base_find,
 	const std::regex& regex,
 	const std::string& to
 )
 {
+	// Base find length
+	const std::size_t base_find_length = base_find.length();
 	// Current search position
 	std::size_t seek = 0;
 	// Match result
 	std::smatch match;
 
-	while (seek < string.length() && 
-		std::regex_search(string.cbegin() + seek, string.cend(), match, regex)) 
-	{
-		string.replace(seek + match.position(1), match[1].length(), to);
+	for (;;) {
+		// Checks if there are no characters left
+		if ((seek + base_find_length) > string.length()) {
+			break;
+		}
 
-		seek += (match.position(1) + match[1].length());
+		// Checks if there's no string left to replace
+		if (string.find(base_find, seek) == std::string::npos) {
+			break;
+		}
+
+		// Checks if there's no matching string
+		if (!std::regex_search(string.cbegin() + seek, string.cend(), match, regex)) {
+			break;
+		}
+
+		// Match position
+		const std::size_t match_pos = match.position(1);
+
+		// Replace
+		string.replace(seek + match_pos, base_find_length, to);
+
+		// Go to the next position for faster replace and avoid loop forever
+		seek += (match_pos + base_find_length);
 	}
 }
 

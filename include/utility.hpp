@@ -64,10 +64,9 @@ namespace utility {
 	) noexcept;
 
 	/**
-	@brief Merges [source] to [destination]. Ignores value if already exist, so the 
-		[destination] will have unique values
-	@param destination Destination std::list
-	@param source std::list to transfer
+	@brief Merges [source] to [destination]
+	@param destination Destination container
+	@param source container to transfer
 	*/
 	template<
 		// Type of the destination container
@@ -85,6 +84,32 @@ namespace utility {
 	extern
 	void
 	merge(
+		DestinationContainer& destination,
+		SourceContainer&& source
+	);
+
+	/**
+	@brief Merges [source] to [destination]. Ignores value if already exist, so the 
+		[destination] will have unique values
+	@param destination Destination container
+	@param source container to transfer
+	*/
+	template<
+		// Type of the destination container
+		class DestinationContainer,
+		// Type of the source container
+		class SourceContainer,
+		// Checks if the destination and source container have the same value type
+		typename = std::enable_if_t<
+			std::is_same_v<
+				typename DestinationContainer::value_type,
+				typename SourceContainer::value_type
+			>
+		>
+	>
+	extern
+	void
+	merge_unique(
 		DestinationContainer& destination,
 		SourceContainer&& source
 	);
@@ -120,6 +145,7 @@ namespace utility {
 	/**
 	@brief Replace all matches [regex] at position 1 to [to]
 	@param string The string to replace
+	@param base_find The string that is intended to replace
 	@param regex The regular expression to match
 	@param [to] Result
 	*/
@@ -127,21 +153,8 @@ namespace utility {
 	void
 	replace(
 		std::string& string,
+		const std::string& base_find,
 		const std::regex& regex,
-		const std::string& to
-	);
-
-	/**
-	@brief Replace all matches whole word from [from] to [to]
-	@param string The string where [from] are
-	@param from The string to replace
-	@param [to] Result
-	*/
-	extern inline
-	void
-	replace(
-		std::string& string,
-		const std::string& from,
 		const std::string& to
 	);
 
