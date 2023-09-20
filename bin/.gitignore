@@ -1,5 +1,7 @@
-*.exe
-*.pdb
+*
 
-!Result/
-!Godot/
+!Input/
+!Output/
+
+!Header.txt
+!Footer.txt

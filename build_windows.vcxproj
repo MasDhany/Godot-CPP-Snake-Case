@@ -19,7 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\editor.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\parser.cpp" />
+    <ClCompile Include="src\utility.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -27,7 +30,7 @@
     <ProjectGuid>{e142f16e-609c-46ab-8046-cfa9363afeba}</ProjectGuid>
     <RootNamespace>build</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>_build</ProjectName>
+    <ProjectName>build_windows</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

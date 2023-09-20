@@ -14,10 +14,10 @@
 namespace config {
 	// Input directory in string
 	constexpr
-	const std::string_view input_directory_string = "Godot";
+	const std::string_view input_directory_string = "Input";
 	// Input directory in string
 	constexpr
-	const std::string_view output_directory_string = "Result";
+	const std::string_view output_directory_string = "Output";
 	// The resulting godot namespace
 	inline
 	const std::string godot_namespace_result = "gd";
