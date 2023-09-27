@@ -1,0 +1,16 @@
+[build]
+├╴build.windows
+│	└╴Used for building to windows
+└╴build.files
+	└╴List of source files to build
+
+[platform]
+├╴platform.windows
+│	└╴Used to develop for windows
+
+[property]
+└╴property.general.props
+	└╴General project properties
+
+[dev]
+└╴Used for development
