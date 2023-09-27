@@ -113,7 +113,6 @@
     </Link>
     <PreBuildEvent>
       <Command>call etc/create_build_files.bat
-call etc/create_build_files_filters.bat
 call etc/message.bat</Command>
     </PreBuildEvent>
     <PostBuildEvent>
@@ -140,7 +139,6 @@ call etc/message.bat</Command>
     </Link>
     <PreBuildEvent>
       <Command>call etc/create_build_files.bat
-call etc/create_build_files_filters.bat
 call etc/message.bat</Command>
     </PreBuildEvent>
     <PostBuildEvent>
@@ -164,7 +162,6 @@ call etc/message.bat</Command>
     </Link>
     <PreBuildEvent>
       <Command>call etc/create_build_files.bat
-call etc/create_build_files_filters.bat
 call etc/message.bat</Command>
     </PreBuildEvent>
     <PostBuildEvent>
@@ -191,7 +188,6 @@ call etc/message.bat</Command>
     </Link>
     <PreBuildEvent>
       <Command>call etc/create_build_files.bat
-call etc/create_build_files_filters.bat
 call etc/message.bat</Command>
     </PreBuildEvent>
     <PostBuildEvent>
