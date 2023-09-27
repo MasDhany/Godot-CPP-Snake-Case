@@ -116,6 +116,9 @@
 call etc/create_build_files_filters.bat
 call etc/message.bat</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>call etc/message.bat</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -140,6 +143,9 @@ call etc/message.bat</Command>
 call etc/create_build_files_filters.bat
 call etc/message.bat</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>call etc/message.bat</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -161,6 +167,9 @@ call etc/message.bat</Command>
 call etc/create_build_files_filters.bat
 call etc/message.bat</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>call etc/message.bat</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -185,6 +194,9 @@ call etc/message.bat</Command>
 call etc/create_build_files_filters.bat
 call etc/message.bat</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>call etc/message.bat</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
