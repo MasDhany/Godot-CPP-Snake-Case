@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{8f694e0f-42c5-44e7-bfb7-8ff20ca9085f}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\config.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\editor.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\parser.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility.ipp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\editor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\main.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\parser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\utility.cpp" />
+  </ItemGroup>
+</Project>
